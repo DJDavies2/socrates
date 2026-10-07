@@ -144,7 +144,6 @@ contains
     real(wp) :: alam,pi,t1,t2, &
          x,x1,x2,y,y1,y2,ylo,yhi,tk
 
-
     ! Parameters:
     integer,parameter :: &
          nwl  = 468,      & !
@@ -155,6 +154,21 @@ contains
          wlmin  = 0.045,  & !
          wlmax  = 8.6e6,  & !
          cutice = 167.0
+#ifdef NVHPC
+    real(wp),parameter,dimension(nwlt) :: &
+         wlt = 0
+    real(wp),parameter,dimension(nwl) :: &
+         tabim = 0
+    real(wp),parameter,dimension(nwl) :: &
+         wl = 0
+    real(wp),parameter,dimension(nwlt,4) :: &
+         tabimt = 0
+
+    real(wp),parameter,dimension(nwl) :: &
+         tabre = 0
+    real(wp),parameter,dimension(nwlt,4) :: &
+         tabret = 0
+#else
     real(wp),parameter,dimension(nwlt) :: &
          wlt = &
          [0.1670e+03, 0.1778e+03, 0.1884e+03, 0.1995e+03, 0.2113e+03, 0.2239e+03, &
@@ -499,6 +513,7 @@ contains
           1.77720,   1.77720,   1.77720,   1.77720,   1.77720,   1.77720, &
           1.77720,   1.77720,   1.77720,   1.77720,   1.77720,   1.77720, &
           1.77720,   1.77800/),shape=(/nwlt,4/))
+#endif
 
     ! #####################################################################
     ! Defines wavelength dependent complex index of refraction for ice.
@@ -651,6 +666,7 @@ contains
     real(wp),dimension(Imaxnp) :: S,T
     Complex(wp) :: A1
     
+#ifndef NVHPC
     If ((Dx.Gt.Imaxx) .Or. (InP.Gt.ImaxNP)) Then
        Error = 1
        Return
@@ -754,7 +770,7 @@ contains
        Xi1 = cmplx(APsi1,Chi1,Kind=wp)
 !ds       Xi1 = cmplx(APsi1,Chi1,Kind=Kind(0d0))
     End Do
-
+#endif
     If (Dg .GT.0) Dg = 2 * Dg / Dqsc
     Dqsc =  2 * Dqsc / Dx**2
     Dqxt =  2 * Dqxt / Dx**2
