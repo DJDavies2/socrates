@@ -771,6 +771,10 @@ contains
 !ds       Xi1 = cmplx(APsi1,Chi1,Kind=Kind(0d0))
     End Do
 #endif
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     If (Dg .GT.0) Dg = 2 * Dg / Dqsc
     Dqsc =  2 * Dqsc / Dx**2
     Dqxt =  2 * Dqxt / Dx**2
